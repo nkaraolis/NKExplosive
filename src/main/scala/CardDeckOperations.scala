@@ -5,7 +5,10 @@ import scala.util.Random
 
 object CardDeckOperations {
 
-  def createDeck(blankCount: Int): List[Card] = List.fill(blankCount)(Blank) :+ Explosive
+  def createDeck(blankCount: Int, explosiveCount: Int, defuseCount: Int): List[Card] =
+    fill(blankCount, Blank) ++ fill(explosiveCount, Explosive) ++ fill(defuseCount, Defuse)
+
+  private def fill(n: Int, c: Card): List[Card] = List.fill(n)(c)
 
   //Return either an error or the remaining cards if any
   def drawCard(deck: List[Card]): String \/ Card = {
@@ -24,7 +27,14 @@ object CardDeckOperations {
         deck.reverse
       else
         Random.shuffle(deck)
-
   }
 
 }
+
+sealed trait Card
+
+case object Explosive extends Card
+
+case object Blank extends Card
+
+case object Defuse extends Card
